@@ -1,4 +1,5 @@
 import csv
+import random
 
 def OpenFile(filename):
     contents = []
@@ -45,5 +46,12 @@ juniors = OpenFile('junior.csv')
 
 for row in adults:
     print(f'{row[0]}:{row[1]}:{row[2]}')
+for row in juniors:
+    print(f'{row[0]}:{row[1]}:{row[2]}')
+
+random.shuffle(adults)
+random.shuffle(juniors)
+
+print('Shuffle')
 for row in juniors:
     print(f'{row[0]}:{row[1]}:{row[2]}')
