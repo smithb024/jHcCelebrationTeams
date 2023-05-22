@@ -49,8 +49,26 @@ for row in adults:
 for row in juniors:
     print(f'{row[0]}:{row[1]}:{row[2]}')
 
+# Loop 10 times
 random.shuffle(adults)
 random.shuffle(juniors)
+# Loop through each adult
+# If the adult has not been used
+# Create a team and add the adult to it. Note the adult as being used. (Remember the adult)
+
+# Loop through each child
+# If the child has not been used and no child has been added to the team add them and note them as being used. (Remember the child)
+# If the child has not been used and a child has been added.
+# If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
+# If the test fails, loop through to the next child.
+
+# If the team can't be completed, clear the adult and child. Move onto the next adult.
+
+# If all adults/children have been allocated. Break out of the loop (10).
+# On the 10th loop. Just take any team.
+
+
+
 
 print('Shuffle')
 for row in juniors:
