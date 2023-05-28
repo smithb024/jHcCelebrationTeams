@@ -1,5 +1,6 @@
 import csv
 import random
+import math
 
 def OpenFile(filename):
     contents = []
@@ -20,6 +21,25 @@ def OpenFile(filename):
 adults = OpenFile('adult.csv')
 juniors = OpenFile('junior.csv')
 tolerance = 1
+
+# Work out working values
+totalTime = 0
+totalAthletes = len(adults) + len(juniors) 
+for row in adults:
+    totalTime += row[1]
+for row in juniors:
+    totalTime += row[1]
+averageTime = totalTime/totalAthletes
+expectedTeamTime = averageTime * 3
+print(f'TotalTime:{totalTime}')
+print(f'TotalAthletes:{totalAthletes}')
+print(f'AverageTime:{averageTime}')
+print(f'ExpectedTeamTime:{expectedTeamTime}')
+
+# Return to minutes and seconds.
+totalMinutes = math.floor(expectedTeamTime)
+totalSeconds =  round((expectedTeamTime - totalMinutes) * 60)
+print(f'Expected Team Time: {totalMinutes}Minutes, {totalSeconds}Seconds')
 
 #with open('adult.csv') as csvFile:
 #    csvReader = csv.reader(csvFile, delimiter=',')
@@ -65,16 +85,23 @@ for i in range(0,10):
             newTeam = [adultRow[0], adultRow[1], "", 0, "", 0]
             adultRow[2] = True
 
-            # Loop through each child
-            # If the child has not been used and no child has been added to the team add them and note them as being used. (Remember the child)
-            # If the child has not been used and a child has been added.
-            # If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
-            # If the test fails, loop through to the next child.
+            # Loop through each junior
+            for junior1Row in juniors:
+                # If the child has not been used and no child has been added to the team add them and note them as being used. (Remember the child)
+                if junior1Row[2] == False:
+                    newTeam[2] = junior1Row[0]
+                    newTeam[3] = junior1Row[1]
+                    junior1Row[2] = True
+                    
+                    # Loop through each junior again to get the second child.
+                    #for junior2Row in juniors:
+                        # If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
+                        # If the test fails, loop through to the next child.
 
-            # If the team can't be completed, clear the adult and child. Move onto the next adult.
+                        # If the team can't be completed, clear the adult and child. Move onto the next adult.
 
-            # If all adults/children have been allocated. Break out of the loop (10).
-            # On the 10th loop. Just take any team.
+                        # If all adults/children have been allocated. Break out of the loop (10).
+                        # On the 10th loop. Just take any team.
 
 
 
