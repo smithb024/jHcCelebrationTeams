@@ -71,13 +71,14 @@ for row in juniors:
     print(f'{row[0]}:{row[1]}:{row[2]}')
 
 # Loop 10 times
-for i in range(0,10):
+for i in range(0,1):
     print(f'Iteration {i}')
     random.shuffle(adults)
     random.shuffle(juniors)
     
     # Loop through each adult
     for adultRow in adults:
+        print(f'Analysing {adultRow[0]}')
         # If the adult has not been used
         if adultRow[2] == False:
             # Create a team and add the adult to it. Note the adult as being used. (Remember the adult)
@@ -94,8 +95,22 @@ for i in range(0,10):
                     junior1Row[2] = True
                     
                     # Loop through each junior again to get the second child.
-                    #for junior2Row in juniors:
+                    for junior2Row in juniors:
                         # If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
+                        if junior2Row[2] == False:
+                            proposedTime = newTeam[1] + newTeam[3] + junior2Row[1]
+                            print(f'Proposed Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
+                            if proposedTime < expectedTeamTime + tolerance and proposedTime > expectedTeamTime - tolerance:
+                                newTeam[4] = junior2Row[0]
+                                newTeam[5] = junior2Row[1]
+                                junior2Row[2] = True
+                                teamSuccess = True
+                                break
+
+                if teamSuccess == True:
+                    break
+        #if teamSuccess == True:
+            
                         # If the test fails, loop through to the next child.
 
                         # If the team can't be completed, clear the adult and child. Move onto the next adult.
@@ -106,6 +121,6 @@ for i in range(0,10):
 
 
 
-print('Shuffle')
-for row in juniors:
-    print(f'{row[0]}:{row[1]}:{row[2]}')
+#print('Shuffle')
+#for row in juniors:
+    #print(f'{row[0]}:{row[1]}:{row[2]}')
