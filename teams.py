@@ -109,8 +109,13 @@ for i in range(0,1):
 
                 if teamSuccess == True:
                     break
-        #if teamSuccess == True:
-            
+                else:
+                    junior1Row[2] = False
+        if teamSuccess == True:
+            # Assign team to array
+            print('Success')
+        else:
+            adultRow[2] = False
                         # If the test fails, loop through to the next child.
 
                         # If the team can't be completed, clear the adult and child. Move onto the next adult.
