@@ -69,6 +69,7 @@ for row in adults:
     print(f'{row[0]}:{row[1]}:{row[2]}')
 for row in juniors:
     print(f'{row[0]}:{row[1]}:{row[2]}')
+completedTeams = []
 
 # Loop 10 times
 for i in range(0,1):
@@ -105,6 +106,10 @@ for i in range(0,1):
                                 newTeam[5] = junior2Row[1]
                                 junior2Row[2] = True
                                 teamSuccess = True
+                                completedTeams.append(newTeam)
+                                # Print out juniors to check current state
+                                for row in juniors:
+                                    print(f'{row[0]}:{row[1]}:{row[2]}')
                                 break
 
                 if teamSuccess == True:
@@ -124,7 +129,9 @@ for i in range(0,1):
                         # On the 10th loop. Just take any team.
 
 
-
+print(f'Number of completed teams {len(completedTeams)}')
+for team in completedTeams:
+    print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}:{team[5]}')
 
 #print('Shuffle')
 #for row in juniors:
