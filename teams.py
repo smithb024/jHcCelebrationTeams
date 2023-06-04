@@ -20,7 +20,7 @@ def OpenFile(filename):
 
 adults = OpenFile('adult.csv')
 juniors = OpenFile('junior.csv')
-tolerance = 1
+tolerance = 0
 
 # Work out working values
 totalTime = 0
@@ -72,14 +72,18 @@ for row in juniors:
 completedTeams = []
 
 # Loop 10 times
-for i in range(0,1):
+for i in range(0,10):
     print(f'Iteration {i}')
+    tolerance += 0.1
     random.shuffle(adults)
     random.shuffle(juniors)
     
     # Loop through each adult
     for adultRow in adults:
         #print(f'Analysing {adultRow[0]}')
+        if adultRow[2] == True:
+            continue
+
         # If the adult has not been used
         if adultRow[2] == False:
             # Create a team and add the adult to it. Note the adult as being used. (Remember the adult)
@@ -106,7 +110,8 @@ for i in range(0,1):
                         # If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
                         if junior2Row[2] == False:
                             proposedTime = newTeam[1] + newTeam[3] + junior2Row[1]
-                            #print(f'Proposed Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
+                            #if i > 0:
+                                #print(f'Proposed Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
                             if proposedTime < expectedTeamTime + tolerance and proposedTime > expectedTeamTime - tolerance:
                                 newTeam[4] = junior2Row[0]
                                 newTeam[5] = junior2Row[1]
@@ -132,11 +137,15 @@ for i in range(0,1):
 
                         # If all adults/children have been allocated. Break out of the loop (10).
                         # On the 10th loop. Just take any team.
+    print(f'Number of completed teams {len(completedTeams)}')
 
 
 print(f'Number of completed teams {len(completedTeams)}')
 for team in completedTeams:
-    print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}:{team[5]}')
+    totalTime = team[1] + team[3] + team[5]
+    print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}:{team[5]}:{totalTime}')
+#for row in adults:
+#    print(f'{row[0]}:{row[1]}:{row[2]}')
 
 #print('Shuffle')
 #for row in juniors:
