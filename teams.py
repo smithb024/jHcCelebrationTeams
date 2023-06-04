@@ -79,7 +79,7 @@ for i in range(0,1):
     
     # Loop through each adult
     for adultRow in adults:
-        print(f'Analysing {adultRow[0]}')
+        #print(f'Analysing {adultRow[0]}')
         # If the adult has not been used
         if adultRow[2] == False:
             # Create a team and add the adult to it. Note the adult as being used. (Remember the adult)
@@ -89,6 +89,11 @@ for i in range(0,1):
 
             # Loop through each junior
             for junior1Row in juniors:
+                #print(f'(1) Analysing {junior1Row[0]}')
+
+                if junior1Row[2] == True:
+                    #print(f'Already assigned, move on')
+                    continue
                 # If the child has not been used and no child has been added to the team add them and note them as being used. (Remember the child)
                 if junior1Row[2] == False:
                     newTeam[2] = junior1Row[0]
@@ -97,24 +102,24 @@ for i in range(0,1):
                     
                     # Loop through each junior again to get the second child.
                     for junior2Row in juniors:
+                        #print(f'(2) Analysing {junior2Row[0]}')
                         # If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
                         if junior2Row[2] == False:
                             proposedTime = newTeam[1] + newTeam[3] + junior2Row[1]
-                            print(f'Proposed Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
+                            #print(f'Proposed Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
                             if proposedTime < expectedTeamTime + tolerance and proposedTime > expectedTeamTime - tolerance:
                                 newTeam[4] = junior2Row[0]
                                 newTeam[5] = junior2Row[1]
                                 junior2Row[2] = True
                                 teamSuccess = True
                                 completedTeams.append(newTeam)
-                                # Print out juniors to check current state
-                                for row in juniors:
-                                    print(f'{row[0]}:{row[1]}:{row[2]}')
+                                print(f'Found Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
                                 break
 
                 if teamSuccess == True:
                     break
                 else:
+                    #print(f'Reset {junior1Row[0]}')
                     junior1Row[2] = False
         if teamSuccess == True:
             # Assign team to array
