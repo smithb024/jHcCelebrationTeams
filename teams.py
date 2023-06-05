@@ -2,6 +2,7 @@ import csv
 import random
 import math
 
+# Open the named file and return the contents.
 def OpenFile(filename):
     contents = []
     with open(filename) as csvFile:
@@ -11,16 +12,21 @@ def OpenFile(filename):
             print(f'OpenFile {filename} - line is {", ".join(row)}')
             time = int(row[2])/60
             time += int(row[1])
-            #print(time)
             content = [row[0], time, False]
             contents.append(content)
             lineCount += 1
         print(f'Processed {lineCount} lines.')
     return contents
 
+# Open the files.
 adults = OpenFile('adult.csv')
 juniors = OpenFile('junior.csv')
+
+# The tolerance is gradually increased, to help find the most even teams.
 tolerance = 0
+
+# Record of teams
+completedTeams = []
 
 # Work out working values
 totalTime = 0
@@ -41,46 +47,25 @@ totalMinutes = math.floor(expectedTeamTime)
 totalSeconds =  round((expectedTeamTime - totalMinutes) * 60)
 print(f'Expected Team Time: {totalMinutes}Minutes, {totalSeconds}Seconds')
 
-#with open('adult.csv') as csvFile:
-#    csvReader = csv.reader(csvFile, delimiter=',')
-#    lineCount = 0
-#    for row in csvReader:
-#        print(f'Adult - line is {", ".join(row)}')
-#        time = int(row[2])/60
-#        time += int(row[1])
-#        print(time)
-#        adult = [row[0], time, False]
-#        adults.append(adult)
-#        lineCount += 1
-#    print(f'Processed {lineCount} lines.')
-
-#with open('junior.csv') as csvFile:
-#    csvReader = csv.reader(csvFile, delimiter=',')
-#    lineCount = 0
-#    for row in csvReader:
-#        print(f'Junior - line is {", ".join(row)}')
-#        time = int(row[2])/60
-#        time += int(row[1])
-#        print(time)
-#        lineCount += 1
-#    print(f'Processed {lineCount} lines.')
-
+# Print file contents for consistency checking
 for row in adults:
     print(f'{row[0]}:{row[1]}:{row[2]}')
 for row in juniors:
     print(f'{row[0]}:{row[1]}:{row[2]}')
-completedTeams = []
 
-# Loop 10 times
-for i in range(0,10):
-    print(f'Iteration {i}')
+# Work out the teams.
+running = True
+iteration = 0;
+while running == True:
+    iteration += 1
+    print(f'Iteration {iteration}')
     tolerance += 0.1
     random.shuffle(adults)
     random.shuffle(juniors)
     
     # Loop through each adult
     for adultRow in adults:
-        #print(f'Analysing {adultRow[0]}')
+        #Already assigned, move on.
         if adultRow[2] == True:
             continue
 
@@ -93,11 +78,10 @@ for i in range(0,10):
 
             # Loop through each junior
             for junior1Row in juniors:
-                #print(f'(1) Analysing {junior1Row[0]}')
-
+                #Already assigned, move on.
                 if junior1Row[2] == True:
-                    #print(f'Already assigned, move on')
                     continue
+
                 # If the child has not been used and no child has been added to the team add them and note them as being used. (Remember the child)
                 if junior1Row[2] == False:
                     newTeam[2] = junior1Row[0]
@@ -106,12 +90,10 @@ for i in range(0,10):
                     
                     # Loop through each junior again to get the second child.
                     for junior2Row in juniors:
-                        #print(f'(2) Analysing {junior2Row[0]}')
-                        # If the sum of the child and the existing team fall with in tolerances, add the child to the team and not them as being used. Save the team. Loop through to the next adult.
+                        #Only look at juniors not in a team.
                         if junior2Row[2] == False:
+                            #If the proposed time is within tolerances, record a successful team.
                             proposedTime = newTeam[1] + newTeam[3] + junior2Row[1]
-                            #if i > 0:
-                                #print(f'Proposed Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
                             if proposedTime < expectedTeamTime + tolerance and proposedTime > expectedTeamTime - tolerance:
                                 newTeam[4] = junior2Row[0]
                                 newTeam[5] = junior2Row[1]
@@ -121,32 +103,30 @@ for i in range(0,10):
                                 print(f'Found Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
                                 break
 
+                # If the team is successful break out of the loop, otherwise release the junior.
                 if teamSuccess == True:
                     break
                 else:
                     #print(f'Reset {junior1Row[0]}')
                     junior1Row[2] = False
-        if teamSuccess == True:
-            # Assign team to array
-            print('Success')
-        else:
+                    
+        # Team not successful release the adult.                
+        if teamSuccess == False:
             adultRow[2] = False
-                        # If the test fails, loop through to the next child.
 
-                        # If the team can't be completed, clear the adult and child. Move onto the next adult.
-
-                        # If all adults/children have been allocated. Break out of the loop (10).
-                        # On the 10th loop. Just take any team.
+    # If all the teams have been found (one per adult), complete successfully.
     print(f'Number of completed teams {len(completedTeams)}')
+    if (len(completedTeams) == len(adults)):
+        print('SUCCESS: All teams generated')
+        running = False
+    # Fail if all the teams can't be found in 100 loops.
+    if (iteration == 100):
+        print('ERROR: Failed to complete. One or more teams have not been generated')
+        running = False
+        
 
-
-print(f'Number of completed teams {len(completedTeams)}')
+print('Output completed teams')
 for team in completedTeams:
     totalTime = team[1] + team[3] + team[5]
     print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}:{team[5]}:{totalTime}')
-#for row in adults:
-#    print(f'{row[0]}:{row[1]}:{row[2]}')
 
-#print('Shuffle')
-#for row in juniors:
-    #print(f'{row[0]}:{row[1]}:{row[2]}')
