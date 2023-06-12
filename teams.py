@@ -99,7 +99,12 @@ while running == True:
                                 newTeam[5] = junior2Row[1]
                                 junior2Row[2] = True
                                 teamSuccess = True
-                                completedTeams.append(newTeam)
+
+                                totalMinutes = math.floor(proposedTime)
+                                totalSeconds =  round((proposedTime - totalMinutes) * 60)
+
+                                completedTeam = [newTeam[0], newTeam[2], newTeam[4], totalMinutes, totalSeconds]
+                                completedTeams.append(completedTeam)
                                 print(f'Found Team Time with {newTeam[0]}-{newTeam[2]}-{junior2Row[0]} is {proposedTime}')
                                 break
 
@@ -127,6 +132,7 @@ while running == True:
 
 print('Output completed teams')
 for team in completedTeams:
-    totalTime = team[1] + team[3] + team[5]
-    print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}:{team[5]}:{totalTime}')
-
+    print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}')
+with open('teams.csv', 'w', encoding='UTF8', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerows(completedTeams)
