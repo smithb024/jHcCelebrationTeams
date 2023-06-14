@@ -129,7 +129,7 @@ while running == True:
         print('ERROR: Failed to complete. One or more teams have not been generated')
         running = False
         
-
+# Output all teams.
 print('Output completed teams')
 for team in completedTeams:
     print(f'{team[0]}:{team[1]}:{team[2]}:{team[3]}:{team[4]}')
