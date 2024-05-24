@@ -82,7 +82,8 @@ while running == True:
                 if junior1Row[2] == True:
                     continue
 
-                # If the child has not been used and no child has been added to the team add them and note them as being used. (Remember the child)
+                # If the child has not been used and no child has been added to the team add them and note them as being used.
+                # (Remember the child)
                 if junior1Row[2] == False:
                     newTeam[2] = junior1Row[0]
                     newTeam[3] = junior1Row[1]
@@ -115,7 +116,7 @@ while running == True:
                     #print(f'Reset {junior1Row[0]}')
                     junior1Row[2] = False
                     
-        # Team not successful release the adult.                
+        # Team not successful release the adult.
         if teamSuccess == False:
             adultRow[2] = False
 
